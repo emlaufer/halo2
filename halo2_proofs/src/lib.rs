@@ -30,13 +30,12 @@ lazy_static! {
 pub mod arithmetic;
 pub mod circuit;
 pub use halo2curves;
+pub mod dev;
+mod helpers;
 mod multicore;
 pub mod plonk;
 pub mod poly;
 pub mod transcript;
-
-pub mod dev;
-mod helpers;
 pub use helpers::SerdeFormat;
 
 #[cfg(feature = "icicle_gpu")]
