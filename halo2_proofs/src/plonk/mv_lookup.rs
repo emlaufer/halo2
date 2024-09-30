@@ -18,6 +18,7 @@ pub fn degree_with_input(base_degree: usize, input_expression_degree: usize) -> 
 
 #[derive(Clone)]
 pub struct Argument<F: Field> {
+    pub(crate) name: String,
     pub(crate) table_expressions: Vec<Expression<F>>,
     pub(crate) inputs_expressions: Vec<Vec<Expression<F>>>,
 }
@@ -33,8 +34,13 @@ impl<F: Field> Debug for Argument<F> {
 
 impl<F: Field> Argument<F> {
     /// Constructs a new lookup argument.
-    pub fn new(table: &[Expression<F>], input: &[Vec<Expression<F>>]) -> Self {
+    pub fn new<S: AsRef<str>>(
+        name: S,
+        table: &[Expression<F>],
+        input: &[Vec<Expression<F>>],
+    ) -> Self {
         Self {
+            name: name.as_ref().to_string(),
             table_expressions: table.to_owned(),
             inputs_expressions: input.to_owned(),
         }

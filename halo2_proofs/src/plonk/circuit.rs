@@ -1553,6 +1553,7 @@ impl<F: Field> Gate<F> {
 /// TODO doc
 #[derive(Debug, Clone)]
 pub struct LookupTracker<F: Field> {
+    pub(crate) name: String,
     pub(crate) table: Vec<Expression<F>>,
     pub(crate) inputs: Vec<Vec<Expression<F>>>,
 }
@@ -1819,6 +1820,7 @@ impl<F: Field> ConstraintSystem<F> {
             .entry(table_expressions_identifier)
             .and_modify(|table_tracker| table_tracker.inputs.push(input_expressions.clone()))
             .or_insert(LookupTracker {
+                name: _name.to_string(),
                 table: table_expressions,
                 inputs: vec![input_expressions],
             });
@@ -1861,8 +1863,12 @@ impl<F: Field> ConstraintSystem<F> {
 
         let mut lookups: Vec<_> = vec![];
         for v in self.lookups_map.values() {
-            let LookupTracker { table, inputs } = v;
-            let mut args = vec![lookup::Argument::new(table, &[inputs[0].clone()])];
+            let LookupTracker {
+                name,
+                table,
+                inputs,
+            } = v;
+            let mut args = vec![lookup::Argument::new(name, table, &[inputs[0].clone()])];
 
             for input in inputs.iter().skip(1) {
                 let cur_input_degree = input.iter().map(|expr| expr.degree()).max().unwrap();
@@ -1879,7 +1885,11 @@ impl<F: Field> ConstraintSystem<F> {
                 }
 
                 if !indicator {
-                    args.push(super::mv_lookup::Argument::new(table, &[input.clone()]))
+                    args.push(super::mv_lookup::Argument::new(
+                        name,
+                        table,
+                        &[input.clone()],
+                    ))
                 }
             }
             lookups.append(&mut args);
@@ -1945,6 +1955,7 @@ impl<F: Field> ConstraintSystem<F> {
             .entry(table_expressions_identifier)
             .and_modify(|table_tracker| table_tracker.inputs.push(input_expressions.clone()))
             .or_insert(LookupTracker {
+                name: _name.to_string(),
                 table: table_expressions,
                 inputs: vec![input_expressions],
             });

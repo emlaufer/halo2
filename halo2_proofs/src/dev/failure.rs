@@ -504,6 +504,7 @@ fn render_lookup<F: Field>(
     let n = prover.n as i32;
     let cs = &prover.cs;
     let lookup = &cs.lookups[lookup_index];
+    let name = &lookup.name;
 
     // Get the absolute row on which the lookup's inputs are being queried, so we can
     // fetch the input values.
@@ -583,7 +584,7 @@ fn render_lookup<F: Field>(
         }
     }
 
-    eprintln!("error: lookup input does not exist in table");
+    eprintln!("error: lookup input does not exist in table {}", name);
     eprint!("  (");
 
     #[cfg(not(feature = "mv-lookup"))]
