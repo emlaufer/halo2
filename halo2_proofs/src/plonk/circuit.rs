@@ -1814,7 +1814,6 @@ impl<F: Field> ConstraintSystem<F> {
         let table_expressions_identifier = table_expressions
             .iter()
             .fold(String::new(), |string, expr| string + &expr.identifier());
-        println!("TABLE EXPR ID: {:?}", table_expressions_identifier);
 
         self.lookups_map
             .entry(table_expressions_identifier)
