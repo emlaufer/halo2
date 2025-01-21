@@ -448,6 +448,7 @@ where
     let theta: ChallengeTheta<_> = transcript.squeeze_challenge_scalar();
 
     println!("instance lookup...");
+    println!("num_lookups: {:?}", pk.vk.cs.lookups.len());
     #[cfg(feature = "mv-lookup")]
     let lookups: Vec<Vec<lookup::prover::Prepared<Scheme::Curve>>> = instance
         .iter()
