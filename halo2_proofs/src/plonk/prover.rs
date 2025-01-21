@@ -346,6 +346,7 @@ where
                     _marker: std::marker::PhantomData,
                 };
 
+                println!("num advice columns: {:?}", meta.num_advice_columns);
                 // Synthesize the circuit to obtain the witness and other information.
                 ConcreteCircuit::FloorPlanner::synthesize(
                     &mut witness,
@@ -354,6 +355,7 @@ where
                     meta.constants.clone(),
                 )?;
 
+                println!("witness advice?: {:?}", witness.advice.len());
                 let mut advice_values = batch_invert_assigned::<Scheme::Scalar>(
                     witness
                         .advice
