@@ -368,6 +368,7 @@ where
                         })
                         .collect(),
                 );
+                println!("advice values?: {:?}", advice_values.len());
 
                 // Add blinding factors to advice columns
                 for (column_index, advice_values) in column_indices.iter().zip(&mut advice_values) {
@@ -398,6 +399,10 @@ where
                     .zip(blinds.iter())
                     .map(|(poly, blind)| params.commit_lagrange(poly, *blind))
                     .collect();
+                println!(
+                    "advice commits projective: {:?}",
+                    advice_commitments_projective.len()
+                );
                 let mut advice_commitments =
                     vec![Scheme::Curve::identity(); advice_commitments_projective.len()];
                 <Scheme::Curve as CurveAffine>::CurveExt::batch_normalize(
@@ -405,6 +410,7 @@ where
                     &mut advice_commitments,
                 );
                 let advice_commitments = advice_commitments;
+                println!("advice commits: {:?}", advice_commitments.len());
                 drop(advice_commitments_projective);
 
                 println!("Writing advice commits...");
