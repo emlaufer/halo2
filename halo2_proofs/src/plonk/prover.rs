@@ -447,6 +447,7 @@ where
     // Sample theta challenge for keeping lookup columns linearly independent
     let theta: ChallengeTheta<_> = transcript.squeeze_challenge_scalar();
 
+    println!("instance lookup...");
     #[cfg(feature = "mv-lookup")]
     let lookups: Vec<Vec<lookup::prover::Prepared<Scheme::Curve>>> = instance
         .iter()
@@ -509,6 +510,7 @@ where
     // Sample gamma challenge
     let gamma: ChallengeGamma<_> = transcript.squeeze_challenge_scalar();
 
+    println!("permutations...");
     // Commit to permutations.
     let permutations: Vec<permutation::prover::Committed<Scheme::Curve>> = instance
         .iter()
@@ -528,6 +530,7 @@ where
             )
         })
         .collect::<Result<Vec<_>, _>>()?;
+    println!("lookups...");
 
     #[cfg(feature = "mv-lookup")]
     let lookups: Vec<Vec<lookup::prover::Committed<Scheme::Curve>>> = lookups
@@ -553,6 +556,7 @@ where
         })
         .collect::<Result<Vec<_>, _>>()?;
 
+    println!("shuffles...");
     let shuffles: Vec<Vec<shuffle::prover::Committed<Scheme::Curve>>> = instance
         .iter()
         .zip(advice.iter())
@@ -581,6 +585,7 @@ where
         })
         .collect::<Result<Vec<_>, _>>()?;
 
+    println!("vanishing argument...");
     // Commit to the vanishing argument's random polynomial for blinding h(x_3)
     let vanishing = vanishing::Argument::commit(params, domain, &mut rng, transcript)?;
 
