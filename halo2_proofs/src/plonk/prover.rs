@@ -407,6 +407,7 @@ where
                 let advice_commitments = advice_commitments;
                 drop(advice_commitments_projective);
 
+                println!("Writing advice commits...");
                 for commitment in &advice_commitments {
                     transcript.write_point(*commitment)?;
                 }
@@ -626,6 +627,7 @@ where
 
     if P::QUERY_INSTANCE {
         // Compute and hash instance evals for each circuit instance
+        println!("Writing hash instance evals...");
         for instance in instance.iter() {
             // Evaluate polynomials at omega^i x
             let instance_evals: Vec<_> = meta
@@ -647,6 +649,7 @@ where
     }
 
     // Compute and hash advice evals for each circuit instance
+    println!("Writing advice scalars...");
     for advice in advice.iter() {
         // Evaluate polynomials at omega^i x
         let advice_evals: Vec<_> = meta
@@ -676,6 +679,7 @@ where
         .collect();
 
     // Hash each fixed column evaluation
+    println!("Writing fixed scalars...");
     for eval in fixed_evals.iter() {
         transcript.write_scalar(*eval)?;
     }
